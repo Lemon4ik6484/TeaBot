@@ -1,26 +1,80 @@
+import telebot
 import random
-from telegram.ext import Updater, CommandHandler
-from telegram import Voice
 
-# функция для обработки команды /дамой
-def damoi_response(update, context):
-    voices = ['voice1.ogg', 'voice2.ogg', 'voice3.ogg', 'voice4.ogg']
-    voice = random.choice(voices)
-    audio = open(voice, 'rb')
-    voice_message = Voice(audio)
-    update.message.reply_voice(voice_message)
+bot = telebot.TeleBot('6247170055:AAEXI3ifNAP7lVVQofz3HShL0DT1d9V15Uk')
 
-# создаем объект для работы с Telegram API
-updater = Updater(token='6119106732:AAESLt8PGqZTPwV8JgYRHWmkcAaN-DN84hc', use_context=True)
+#----------------------------------
+# .  Голос Списки
+#----------------------------------
 
-# создаем обработчик для команды /дамой
-damoi_handler = CommandHandler('\u0434\u0430\u043C\u043E\u0439', damoi_response)
+# Списки возможных голосовых сообщений
+voice_messages_damoi = [
+    'damoi1.ogg',
+    'damoi2.ogg',
+    'damoi3.ogg'
+    # Добавьте остальные файлы в список
+]
 
-# регистрируем обработчик в объекте updater
-updater.dispatcher.add_handler(damoi_handler)
+voice_messages_pirogi = [
+    'pirogi1.ogg',
+    'pirogi2.ogg',
+    'pirogi3.ogg',
+    'pirogi4.ogg',
+    'pirogi5.ogg',
+    'pirogi6.ogg'
+    # Добавьте остальные файлы в список
+]
 
-# запускаем бота
-updater.start_polling()
+#------------------------
+# .   Команды
+#------------------------
+#----------
+#дамой
+#----------
+@bot.message_handler(commands=['\u0414\u0430\u043C\u043E\u0439'])
+def send_damoi(message):
+    # Выбираем случайное голосовое сообщение из списка для команды /Дамой
+    voice_file = random.choice(voice_messages_damoi)
 
-# останавливаем бота при получении сигнала SIGINT (Ctrl+C)
-updater.idle()
+    # Отправляем голосовое сообщение
+    with open(voice_file, 'rb') as voice:
+        bot.send_voice(message.chat.id, voice)
+
+@bot.message_handler(commands=['\u0434\u0430\u043C\u043E\u0439'])
+def send_damoi(message):
+    # Выбираем случайное голосовое сообщение из списка для команды /дамой
+    voice_file = random.choice(voice_messages_damoi)
+
+    # Отправляем голосовое сообщение
+    with open(voice_file, 'rb') as voice:
+        bot.send_voice(message.chat.id, voice)
+
+#---------
+#пироги
+#---------
+
+@bot.message_handler(commands=['\u041f\u0438\u0440\u043e\u0433\u0438'])
+def send_pirogi(message):
+    # Выбираем случайное голосовое сообщение из списка для команды /Пироги
+    voice_file = random.choice(voice_messages_pirogi)
+
+    # Отправляем голосовое сообщение
+    with open(voice_file, 'rb') as voice:
+        bot.send_voice(message.chat.id, voice)
+
+@bot.message_handler(commands=['\u043f\u0438\u0440\u043e\u0433\u0438'])
+def send_pirogi(message):
+    # Выбираем случайное голосовое сообщение из списка для команды /пироги
+    voice_file = random.choice(voice_messages_pirogi)
+
+    # Отправляем голосовое сообщение
+    with open(voice_file, 'rb') as voice:
+        bot.send_voice(message.chat.id, voice)
+
+
+
+#-------------------
+# . Запуск Бота
+#-------------------
+
+bot.polling(none_stop=True)
